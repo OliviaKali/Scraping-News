@@ -35,11 +35,8 @@ $(document).on("click", "#idInfo", function() {
       </form>
       <button data-id="${data._id}" id="savenote">Save Note</button>`);
 
-      // If there's a note in the article
       if (data.note) {
-        // Place the title of the note in the title input
         $("#titleinput").val(data.note.title);
-        // Place the body of the note in the body textarea
         $("#bodyinput").val(data.note.body);
       }
     });
@@ -64,6 +61,37 @@ $(document).on("click", "#savenote", function() {
         console.log(data);
     //   $("#notes").empty();
 
+//Get function to make notes appear without disappearing 
+//whenever you click on a new article
+
+// module.exports = {
+//     get: function(data, cb) {
+//         Note.find({
+//             Article: data._id
+//         }, cb);
+//     },
+//     save: function(data, cb) {
+//         var newNote = {
+//             Article: data._id,
+//             Note: data.Note
+//         };
+//         Note.create(newNote, function(err, doc) {
+//             if (err) {
+//                 console.log(err);
+//             }
+//             else {
+//                 console.log(doc);
+//                 cb(doc);
+//             }
+//         });
+//     },
+//     delete:function(data, cb) {
+//         Note.removed({
+//             _id:data._id
+//         }, cb);
+//     }
+// }
+
         $("#notes").append(`<br>
         <div class="card" style="width: 18rem;">
         <div class="card-body">
@@ -71,11 +99,12 @@ $(document).on("click", "#savenote", function() {
           <p class="card-text">${data.body}</p>
         </div>
       </div>`)
-    
+    //need to do a get request to make the note appear again
     }).catch(err => {
         console.log(err)
           $("#titleinput").val("");
           $("#bodyinput").val("");
     });
-
 });
+
+
