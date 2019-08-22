@@ -119,28 +119,27 @@ app.get("/articles/:id", function(req, res) {
 app.post("/articles/:id", function(req, res) {
     // console.log(req.body);
 
-    notesController.save(req.body, function(data) {
-    res.json(data);
-  });
+  //   notesController.save(req.body, function(data) {
+  //   res.json(data);
+  // });
 
-    
-  // db.Note.create(req.body)
+  db.Note.create(req.body)
 
-  //   .then(function(dbNote) {
-  //     return db.Article.find(
-  //       { _id: dbNote._id,
-  //           body: dbNote.body
-  //       }
-  //     )
-  //   })
-  //   .then(function(dbArticle) {
-  //   console.log(dbArticle);
-  //     res.send(dbArticle);
+    .then(function(dbNote) {
+      return db.Article.find(
+        { _id: dbNote._id,
+            body: dbNote.body
+        }
+      )
+    })
+    .then(function(dbArticle) {
+    console.log(dbArticle);
+      res.send(dbArticle);
       
-  //   })
-  //   .catch(function(err) {
-  //     res.json(err);
-  //   });
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 app.get("/api/notes", function(req, res) {
