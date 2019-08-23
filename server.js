@@ -62,24 +62,6 @@ app.get("/scrape", function(req, res) {
         });
       } 
     });
-
-    // Send a message to the client
-    // res.render("index", dbArticle);
-    //check for duplicates in database
-    // console.log("checking for database duplicates...");
-    // db.Article.find({}, function(err, data) {
-    //     data.forEach(function(i, element) {
-    //         result.forEach(function(i2, element2) {
-    //             //if link matches one in the database...
-    //             if (i.link === i2.link) {
-    //                 console.log("duplicate found!");
-    //                 //delete the duplicate from the array
-    //                 result.splice(element2, 1);
-    //                 console.log("duplicate deleted.");
-    //             }
-    //         });
-    //     });
-    // });
     res.redirect('/')
   });
 
@@ -207,6 +189,35 @@ app.get("/notes/", function(req, res) {
 //       .catch(function(err) {
 //         res.json(err);
 //       });
+//   });
+
+
+// Routes with ORM
+//var notesController = require("./controller/notes")
+
+//   app.get("/notes/:article_id?", function(req, res) {
+//     var query = {};
+//     if (req.params.article_id) {
+//       query._id = req.params.article_id;
+//     }
+  
+//     notesController.get(query, function(err, data) {
+//       res.json(data);
+//     });
+//   });
+  
+//   app.delete("/notes/:id", function(req, res) {
+//     var query = {};
+//     query._id = req.params.id;
+//     notesController.delete(query, function(err, data) {
+//       res.json(data);
+//     });
+//   });
+  
+//   app.post("/notes", function(req, res) {
+//     notesController.save(req.body, function(data) {
+//       res.json(data);
+//     });
 //   });
 
 app.listen(PORT, function() {
