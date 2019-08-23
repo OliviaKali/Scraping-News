@@ -35,44 +35,12 @@ $(document).on("click", "#idInfo", function() {
       </form>
       <button data-id="${data._id}" id="savenote">Save Note</button>`);
 
-      // var noteData = {
-      //   _id: currentArticle._id,
-      //   notes: data || []
-      // };
-
-      // $("#savenote").data("article", noteData)
-
       if (data.note) {
         $("#titleinput").val(data.note.title);
         $("#bodyinput").val(data.note.body);
       }
     });
 });
-
-// function renderNotesList(data) {
-//   // This function handles rendering note list items to our notes modal
-//   // Setting up an array of notes to render after finished
-//   // Also setting up a currentNote variable to temporarily store each note
-//   var notesToRender = [];
-//   var currentNote;
-//   if (!data.notes.length) {
-//     // If we have no notes, just display a message explaining this
-//     currentNote = $("<li class='list-group-item'>No notes for this article yet.</li>");
-//     notesToRender.push(currentNote);
-//   } else {
-//     // If we do have notes, go through each one
-//     for (var i = 0; i < data.notes.length; i++) {
-//       // Constructs an li element to contain our noteText and a delete button
-//       currentNote = $("<li class='list-group-item note'>")
-//         .text(data.notes[i].noteText)
-//         .append($("<button class='btn btn-danger note-delete'>x</button>"));
-//       // Store the note id on the delete button for easy access when trying to delete
-//       currentNote.children("button").data("_id", data.notes[i]._id);
-//       // Adding our currentNote to the notesToRender array
-//       notesToRender.push(currentNote);
-//     }
-//   }
-// }
 
 $(document).on("click", "#savenote", function() {
   var thisId = $(this).attr("data-id");
@@ -110,7 +78,6 @@ $(document).on("click", "#savenote", function() {
           $("#titleinput").val("");
           $("#bodyinput").val("");
     });
-    // renderNotesList();
 });
 
 // $(document).on("click", "#savenote", function(){
@@ -121,7 +88,17 @@ $(document).on("click", "#savenote", function() {
 // })
 
 // $(document).on("click", "delete-btn", function() {
-//   var deletedNote = 
+//   // var deletedNote = 
+//   var thisId = $(this).attr("data-id");
+//   $.ajax({
+//     type: "GET",
+//     url: "/delete" + thisId,
+//     success: function(response) {
+
+//       $("#titleinput").val("");
+//       $("#bodyinput").val("");
+//     }
+//   })
 // })
 
 

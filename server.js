@@ -7,7 +7,6 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 var db = require("./models");
-var notesController = require("./controller/notes")
 
 var PORT = 8080;
 
@@ -63,6 +62,24 @@ app.get("/scrape", function(req, res) {
         });
       } 
     });
+
+    // Send a message to the client
+    // res.render("index", dbArticle);
+    //check for duplicates in database
+    // console.log("checking for database duplicates...");
+    // db.Article.find({}, function(err, data) {
+    //     data.forEach(function(i, element) {
+    //         result.forEach(function(i2, element2) {
+    //             //if link matches one in the database...
+    //             if (i.link === i2.link) {
+    //                 console.log("duplicate found!");
+    //                 //delete the duplicate from the array
+    //                 result.splice(element2, 1);
+    //                 console.log("duplicate deleted.");
+    //             }
+    //         });
+    //     });
+    // });
     res.redirect('/')
   });
 
@@ -91,58 +108,54 @@ app.get("/articles/:id", function(req, res) {
 });
 
 
-// app.post("/articles/:id", function(req, res) {
-//     db.Note.create(req.body)
-//       .then(function(dbNote) {
-//         return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-//       })
-//       .then(function(dbArticle) {
-//           console.log(dbArticle);
-        
-//         db.Note.findOne({ _id: dbArticle.note })
-//         .then(function(dbArticle) {
-            
-//           console.log(dbArticle);
-//           res.json(dbArticle);
-//         })
-//         .catch(function(err) {
-//           res.json(err);
-//         });
-//         // res.json(dbArticle);
-//       })
-//       .catch(function(err) {
-//         res.json(err);
-//       });
-//   });
-
-
 app.post("/articles/:id", function(req, res) {
-    // console.log(req.body);
+    db.Note.create(req.body)
+      .then(function(dbNote) {
+        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+      })
+      .then(function(dbArticle) {
+          console.log(dbArticle);
+        
+        db.Note.findOne({ _id: dbArticle.note })
+        .then(function(dbArticle) {
+            
+          console.log(dbArticle);
+          res.json(dbArticle);
+        })
+        .catch(function(err) {
+          res.json(err);
+        });
+        // res.json(dbArticle);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
 
-  //   notesController.save(req.body, function(data) {
-  //   res.json(data);
-  // });
 
-  db.Note.create(req.body)
+// app.post("/articles/:id", function(req, res) {
+//     // console.log(req.body);
 
-    .then(function(dbNote) {
-      return db.Article.find(
-        { _id: dbNote._id,
-            body: dbNote.body
-        }
-      )
-    })
-    .then(function(dbArticle) {
-    console.log(dbArticle);
-      res.send(dbArticle);
+//   db.Note.create(req.body)
+
+//     .then(function(dbNote) {
+//       return db.Article.find(
+//         { _id: dbNote._id,
+//             body: dbNote.body
+//         }
+//       )
+//     })
+//     .then(function(dbArticle) {
+//     console.log(dbArticle);
+//       res.send(dbArticle);
       
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
+//     })
+//     .catch(function(err) {
+//       res.json(err);
+//     });
+// });
 
-app.get("/api/notes", function(req, res) {
+app.get("/notes/", function(req, res) {
     db.Note.find({})
     .populate("note")
     .then(function(dbNote) {
@@ -150,37 +163,22 @@ app.get("/api/notes", function(req, res) {
     })
     .catch(function(err) {
         res.json(err)
-    });
-});
+    })
+})
 
-app.get("/notes/:article_id?", function(req, res) {
-  var query = {};
-  if (req.params.article_id) {
-    query._id = req.params.article_id;
-  }
-
-  notesController.get(query, function(err, data) {
-    res.json(data);
-  });
-});
-
-app.delete("/notes/:id", function(req, res) {
-  var query = {};
-  query._id = req.params.id;
-  notesController.delete(query, function(err, data) {
-    res.json(data);
-  });
-});
-
-// app.post("/notes", function(req, res) {
-//   notesController.save(req.body, function(data) {
-//     res.json(data);
+// app.get("/delete/:id", function(req, res) {
+//   db.Note.deleteOne({
+//     _id: dbArticle.note
+//   }, function(error, removed) {
+//     if (error) {
+//       console.log(error);
+//       res.send(error);
+//     } else {
+//       console.log(removed);
+//       res.send(removed);
+//     }
 //   });
 // });
-
-
-//db.Note.delete({_id: db.Note.id})
-//.then
 
 // app.get("/notes/:id", function(req, res) {
 //     db.Note.findOne({ _id: req.params.id })
