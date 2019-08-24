@@ -21,7 +21,6 @@ app.set("views", "./views")
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://root:password1@ds163940.mlab.com:63940/heroku_f7rbpbl1"
 mongoose.connect(MONGODB_URI);
 
