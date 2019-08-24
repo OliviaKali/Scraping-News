@@ -33,7 +33,8 @@ $(document).on("click", "#idInfo", function () {
           <textarea class="form-control" id="bodyinput" name="body" rows="3" placeholder="Leave Note Here"></textarea>
         </div>
       </form>
-      <button data-id="${data._id}" id="savenote" class="btn btn-info">Save Note</button>`);
+      <button data-id="${data._id}" id="savenote" class="btn btn-info">Save Note</button>
+      <button type="button" class="delete-btn btn btn-info">Clear Note</button>`);
 
       if (data.note) {
         $("#titleinput").val(data.note.title);
@@ -61,7 +62,7 @@ $(document).on("click", "#savenote", function () {
       console.log(data);
       //   $("#notes").empty();
 
-      $("#notes").append(`<button type="button" class="delete-btn btn btn-info">Clear Note</button>`)
+    
     })
 });
 
