@@ -21,11 +21,26 @@ app.set("views", "./views")
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+
+mongoose.Promise = global.Promise;
+
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://root:password1@ds163940.mlab.com:63940/heroku_f7rbpbl1",
+{
+  useMongoClient: true
+}
+  );
+
 // mongoose.connect("mongodb://localhost/ScrapingNews", { useNewUrlParser: true });
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://root:password1@ds163940.mlab.com:63940/heroku_f7rbpbl1";
+// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://root:password1@ds163940.mlab.com:63940/heroku_f7rbpbl1"
+// // {
+// //   useMongoClient: true
+// // }
 
-mongoose.connect(MONGODB_URI);
+// mongoose.connect(MONGODB_URI);
+
+
 
 // Routes
 app.get("/", function(req, res) {
