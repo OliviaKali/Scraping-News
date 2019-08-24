@@ -12,6 +12,9 @@ $.getJSON("/articles", function(data) {
   }
 });
 
+
+
+
 $(document).on("click", "#idInfo", function() {
   $("#notes").empty();
   var thisId = $(this).attr("data-id");
@@ -25,7 +28,7 @@ $(document).on("click", "#idInfo", function() {
 
       $("#notes").append(`<form>
         <div class="form-group">
-          <h3>${data.title}</h3>
+        
           <input input id="titleinput" name="title" class="form-control" placeholder="Note Title">
         </div>
       
@@ -35,10 +38,16 @@ $(document).on("click", "#idInfo", function() {
       </form>
       <button data-id="${data._id}" id="savenote">Save Note</button>`);
 
-      if (data.note) {
-        $("#titleinput").val(data.note.title);
-        $("#bodyinput").val(data.note.body);
-      }
+      $.ajax({
+        method: "GET",
+        url: "/notes/" + thisId
+      })
+        .then(function(data) {
+          if (data) {
+            $("#titleinput").val(data.title);
+            $("#bodyinput").val(data.body);
+          }
+        });
     });
 });
 
@@ -47,32 +56,31 @@ $(document).on("click", "#savenote", function() {
     
     var newTitle =  $("#titleinput").val();
     var newBody = $("#bodyinput").val();
-
   $.ajax({
     method: "POST",
-    url: "/articles/" + thisId,
+    url: "/notes/" + thisId,
     data: {
       title: newTitle,
-      body: newBody
+      body: newBody,
+      _articleId: thisId
     }
   })
     .then(function(data) {
-        console.log("data");
         console.log(data);
     //   $("#notes").empty();
 
 //Get function to make notes appear without disappearing 
 //whenever you click on a new article
 
-        $("#notes").append(`<br>
-        <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-text">${data.title}</h5>
-          <p class="card-text">${data.body}</p>
-        </div>
-      </div>
-      <button type="button" class="delete-btn btn btn-info">Delete</button>`)
-    //need to do a get request to make the note appear again
+    //     $("#notes").append(`<br>
+    //     <div class="card" style="width: 18rem;">
+    //     <div class="card-body">
+    //       <h5 class="card-text">${data.title}</h5>
+    //       <p class="card-text">${data.body}</p>
+    //     </div>
+    //   </div>
+    //   <button type="button" class="delete-btn btn btn-info">Delete</button>`)
+    // //need to do a get request to make the note appear again
     }).catch(err => {
         console.log(err)
           $("#titleinput").val("");

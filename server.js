@@ -89,31 +89,13 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
-
-app.post("/articles/:id", function(req, res) {
-    db.Note.create(req.body)
-      .then(function(dbNote) {
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-      })
-      .then(function(dbArticle) {
-          console.log(dbArticle);
-        
-        db.Note.findOne({ _id: dbArticle.note })
-        .then(function(dbArticle) {
-            
+app.put("/articles/:id", function(req, res) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }, { new: true })
+    .then(function(dbArticle) {   
           console.log(dbArticle);
           res.json(dbArticle);
-        })
-        .catch(function(err) {
-          res.json(err);
         });
-        // res.json(dbArticle);
-      })
-      .catch(function(err) {
-        res.json(err);
       });
-  });
-
 
 // app.post("/articles/:id", function(req, res) {
 //     // console.log(req.body);
@@ -174,51 +156,47 @@ app.get("/notes/", function(req, res) {
 //       });
 //   });
   
-//   app.post("/notes/:id", function(req, res) {
-//     db.Note.create(req.body)
-//       .then(function(dbArticle) {
-//         return db.Note.findOneAndUpdate(
-//           { _id: req.params.id },
-//           { article: dbArticle._id },
-//           { new: true }
-//         );
-//       })
-//       .then(function(dbNote) {
-//         res.json(dbNote);
-//       })
-//       .catch(function(err) {
-//         res.json(err);
-//       });
-//   });
+  app.post("/notes/:id", function(req, res) {
+    db.Note.create(req.body)
+      .then(function(dbArticle) {
+        return db.Note.findOneAndUpdate(
+          { _id: req.params.id },
+          { article: dbArticle._id },
+          { new: true }
+        );
+      })
+      .then(function(dbNote) {
+        res.json(dbNote);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+  });
 
+
+  app.get("/notes/:id", function(req, res) {
+    db.Note.find({ _articleId: req.params.id })
+      .then(function(dbNote) {
+        res.json(dbNote);
+      //   return db.Note.find({})
+      })
+  });
 
 // Routes with ORM
 //var notesController = require("./controller/notes")
 
-//   app.get("/notes/:article_id?", function(req, res) {
-//     var query = {};
-//     if (req.params.article_id) {
-//       query._id = req.params.article_id;
-//     }
+  app.delete("/notes/:id", function(req, res) {
+    db.Note.remove({ _articleId: req.params.id })
+    .then(function(dbNote) {
+      res.json(data);
+    });
+  });
   
-//     notesController.get(query, function(err, data) {
-//       res.json(data);
-//     });
-//   });
-  
-//   app.delete("/notes/:id", function(req, res) {
-//     var query = {};
-//     query._id = req.params.id;
-//     notesController.delete(query, function(err, data) {
-//       res.json(data);
-//     });
-//   });
-  
-//   app.post("/notes", function(req, res) {
-//     notesController.save(req.body, function(data) {
-//       res.json(data);
-//     });
-//   });
+  app.post("/notes", function(req, res) {
+    db.Note.create(req.body, function (dbNote) {
+      res.json(dbNote)
+    });
+  });
 
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
