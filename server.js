@@ -79,7 +79,7 @@ app.get("/articles", function(req, res) {
 
 app.get("/articles/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
-    .populate("note")
+
     .then(function(dbArticle) {
       res.json(dbArticle);
     //   return db.Note.find({})
@@ -89,29 +89,39 @@ app.get("/articles/:id", function(req, res) {
     });
 });
 
+app.get("/notes/:id", function(req, res) {
+  db.Note.find({ _articleId: req.params.id })
+    .then(function(dbNote) {
+      res.json(dbNote);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
 
 app.post("/articles/:id", function(req, res) {
     db.Note.create(req.body)
       .then(function(dbNote) {
-        return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+        // return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+        res.json(dbNote)
       })
-      .then(function(dbArticle) {
-          console.log(dbArticle);
+      // .then(function(dbArticle) {
+      //     console.log(dbArticle);
         
-        db.Note.findOne({ _id: dbArticle.note })
-        .then(function(dbArticle) {
+      //   db.Note.findOne({ _id: dbArticle.note })
+      //   .then(function(dbArticle) {
             
-          console.log(dbArticle);
-          res.json(dbArticle);
-        })
-        .catch(function(err) {
-          res.json(err);
-        });
-        // res.json(dbArticle);
-      })
-      .catch(function(err) {
-        res.json(err);
-      });
+      //     console.log(dbArticle);
+      //     res.json(dbArticle);
+      //   })
+      //   .catch(function(err) {
+      //     res.json(err);
+      //   });
+      //   // res.json(dbArticle);
+      // })
+      // .catch(function(err) {
+      //   res.json(err);
+      // });
   });
 
 
