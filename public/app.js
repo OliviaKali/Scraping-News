@@ -61,7 +61,10 @@ $(document).on("click", "#savenote", function () {
 
       console.log(data);
       //   $("#notes").empty();
-
+      $("#articleNotes").append(`<br>
+      <div class="alert alert-secondary" role="alert">
+      Your note has been saved
+    </div>`)
     
     })
 });
