@@ -34,7 +34,8 @@ $(document).on("click", "#idInfo", function () {
         </div>
       </form>
       <button data-id="${data._id}" id="savenote" class="btn btn-info">Save Note</button>
-      <button type="button" class="delete-btn btn btn-info">Clear Note</button>`);
+      <button data-id="${data._id}" class="delete-btn btn btn-info">Clear Note</button>
+      <div data-id="${data._id}" id="articleNotes"></div>`);
 
       if (data.note) {
         $("#titleinput").val(data.note.title);
@@ -65,15 +66,30 @@ $(document).on("click", "#savenote", function () {
       <div class="alert alert-secondary" role="alert">
       Your note has been saved
     </div>`)
+      
     
     })
 });
 
 
 $(document).on("click", ".delete-btn", function () {
+  var thisId = $(this).attr("data-id");
+
+  $.ajax({
+    method: "POST",
+    url: "/articles/" + thisId
+  })
+    .then(function (data) {
+      console.log(data);
   // $('#myform').reset();
   $("#titleinput").val("");
   $("#bodyinput").val("");
+  $("#articleNotes").append(`<br>
+  <div class="alert alert-secondary" role="alert">
+  Your note has been deleted
+</div>`)
+  // $("#articleNotes").empty();
+    });
 });
 
 
